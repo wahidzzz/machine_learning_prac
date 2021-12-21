@@ -1,0 +1,123 @@
+ Machine Learning Practicals
+ Practical No.1
+ Design a simple machine learning model to train the training instances and test the same.
+ import random;
+from sklearn.linear_model import LinearRegression
+# Create an empty list for the feature data set 'X' and the target data set 'y'
+feature_set = []
+target_set= []
+# get the number of rows wanted for the data set
+number_of_rows = 200
+# limit the possible values in the data set
+random_number_limit = 2000
+#Create the training data set
+#Create and append a randomly generated data set to the input and output
+for i in range(0,number_of_rows):
+  x = random.randint(0, random_number_limit)
+  y = random.randint(0, random_number_limit)
+  z = random.randint(0, random_number_limit)
+  print("x=",x,"\ty=",y,"\tz=",z);
+  function = (10*x) + (2*y) + (3*z)
+  feature_set.append([x,y,z])
+  target_set.append(function)
+model = LinearRegression() #Create a linear regression object/model
+model.fit(feature_set, target_set)
+test_set = [[193,1651,983]]
+prediction = model.predict(test_set)
+print('Prediction:'+str(prediction)+'\t'+ 'Coefficient:'+str(model.coef_))
+ 
+ 
+ 
+ Practical No. 2 : Implement and demonstrate the FIND-S algorithm for finding the most specific hypothesis based on a given set of training data samples. Read the training data from a .CSV file
+ import csv
+num_attributes = 6
+a = []
+print("\n The Given Training Data Set \n")
+with open('practical1b.csv', 'r') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        a.append(row)
+        print(row)
+
+print("\n The initial value of hypothesis: ")
+hypothesis = ['0'] * num_attributes
+print(hypothesis)
+
+for j in range(0,num_attributes):
+    hypothesis[j] = a[0][j];
+    print("\n Find S: Finding a Maximally Specific Hypothesis\n")
+    for i in range(0,len(a)):
+        if a[i][num_attributes]=='yes':
+            for j in range(0,num_attributes):
+                if a[i][j] != hypothesis[j]:
+                    hypothesis[j] = '?'
+                else :
+                    hypothesis[j]= a[i][j]
+    print(" For Training instance No:{0} the hypothesis is ".format(i),hypothesis)
+    print("\n The Maximally Specific Hypothesis for a given Training Examples :\n")
+    print(hypothesis)
+ 
+ 
+ 
+ Practical No.3:Perform Data Loading, Feature selection (Principal Component analysis) and Feature Scoring and Ranking.
+ # Library Required For PCA
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Reading Dataset from iris.data which is available in pandas library
+
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class']
+dataset = pd.read_csv(url, names=names)
+
+# Display iris.data Dataset
+
+print(dataset.head())
+X = dataset.drop('Class', 1)
+Y = dataset['Class']
+
+
+# Splitting the dataset into the Training set and Test set
+
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Display Training and Testing data
+
+print("DataSet before PCA ");
+print(X_train)
+print(X_test);
+
+
+# Creating PCA object
+pca = PCA()
+X_train = pca.fit_transform(X_train)
+X_test = pca.transform(X_test)
+
+# Giving a Principal feature to model
+
+pca = PCA(n_components=2)
+X_train = pca.fit_transform(X_train)
+X_test = pca.transform(X_test)
+
+print("DataSet After PCA ");
+print(X_train)
+print(X_test);
+
+
+For a given set of training data examples stored in a .CSV file, implement and demonstrate the Candidate-Elimination algorithm to output a description of the set of all hypotheses consistent with the training examples.
+
+
+Write a program to implement the naïve Bayesian classifier for a sample training data set stored as a .CSV file. Compute the accuracy of the classifier, considering few test data sets.
+
+
+ For a given set of training data examples stored in a .CSV file implement Least Square Regression algorithm.
+
+
+ For a given set of training data examples stored in a .CSV file implement Logistic Regression algorithm.
